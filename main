@@ -1,7 +1,6 @@
 import pyttsx3 #pip install pyttsx3
 import datetime
 import speech_recognition as sr #pip install SpeechRecognition
-
 import wikipedia #pip install wikipedia
 import webbrowser
 import os
@@ -9,7 +8,8 @@ import pywhatkit as kit #pip install pywhatkit
 import pyjokes #pip install pyjokes
 import pyautogui #pip install PyAutoUI
 import time
-import requests
+import requests #pip install requests
+
 
 engine = pyttsx3.init('sapi5')
 voices=engine.getProperty('voices')
@@ -175,7 +175,7 @@ if __name__=="__main__":
                 time.sleep(3)
                 speak("please ma'am hold the screen for few seconds, i am taking sreenshot")
                 img = pyautogui.screenshot()
-                img.save(f"(name).png")
+                img.save(f"{name}.png")
                 speak("i am done ma'am, the screenshot is saved in our main folder. now i am ready for next command")
             elif 'quit' in query or 'exit' in query:
                 speak("Goodbye Siyona!")
