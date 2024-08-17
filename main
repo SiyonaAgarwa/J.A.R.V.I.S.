@@ -11,10 +11,12 @@ import time
 import requests #pip install requests
 
 
+
 engine = pyttsx3.init('sapi5')
 voices=engine.getProperty('voices')
 #print (voices) gives the no of voices present in the system
 #print (voices[0].id) gives info about present voice at index 0(we have 2 voices 0=male,1=female)
+#engine.getProperty('rate',100) maintain the speed of speech
 
 
 phone_book = {
@@ -123,7 +125,7 @@ if __name__=="__main__":
                 speak("Okay ma'am, closing command prompt")
                 os.system("taskkill /f /im code.exe")
 
-            if 'wikipedia' in query:  #if wikipedia found in the query then this block will be executed
+            elif 'wikipedia' in query:  #if wikipedia found in the query then this block will be executed
                 speak('Searching Wikipedia...')
                 query = query.replace("wikipedia", "")
                 results = wikipedia.summary(query, sentences=1) 
@@ -161,6 +163,14 @@ if __name__=="__main__":
             elif 'sleep the system' in query:
                 os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
 
+            elif 'volume up' in query:
+                pyautogui.press("volumeup")
+            elif 'volume down' in query:
+                pyautogui.press("volumedown")
+            elif 'mute' in query:
+                pyautogui.press("volumemute")
+
+
             elif 'switch the window' in query:
                 pyautogui.keyDown("alt")
                 pyautogui.press("tab")
@@ -177,6 +187,7 @@ if __name__=="__main__":
                 img = pyautogui.screenshot()
                 img.save(f"{name}.png")
                 speak("i am done ma'am, the screenshot is saved in our main folder. now i am ready for next command")
+            
             elif 'quit' in query or 'exit' in query:
                 speak("Goodbye Siyona!")
                 break 
