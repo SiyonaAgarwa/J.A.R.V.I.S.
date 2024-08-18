@@ -23,7 +23,7 @@ Just double-click `command.bat` or execute it from Command Prompt:
 
 ```sh
 command.bat
-SHsh```
+sh```
 ### TO RUN:
 Open Command Prompt.
 Navigate to the project directory.
