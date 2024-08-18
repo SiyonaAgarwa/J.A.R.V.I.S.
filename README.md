@@ -18,6 +18,7 @@ To set up the environment, run the `command.bat` file. This will:
 
 - Install Python 3.10
 - Install necessary Python packages
+- Install VS Code
 
 Just double-click `command.bat` or execute it from Command Prompt:
 command.bat
