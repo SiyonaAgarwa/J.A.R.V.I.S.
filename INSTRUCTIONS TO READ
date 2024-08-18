@@ -1,19 +1,30 @@
-WHAT CAN YOUR JARIS DO:
-
+Click on RUN button
 Activate by saying 'wake up jarvis'
 
-Open and close notepad 
-Open and close command prompt
-Send messages on WhatsApp(for my specific contacts only)
-Open and close VS codeSearch anything on Wikipedia
-Open ChatGPT
-Shutdown,sleep r restart your system
-switch window
-Take a screenshot
-Tell you the time,a random joke
-Open anything on youtube
-Open anything on Google
-Increase,decrease or mute your system volume
+
+WHAT CAN YOUR JARIS DO:
+'Open notepad'
+'close notepad'
+'open command prompt'
+'close command prompt'
+'Send messages' on WhatsApp(for my specific contacts only)
+'Open vs code'
+'close VS code'
+'Search anything on Wikipedia'
+'Open ChatGPT'
+Shutdown' the system 
+'Sleep' the system 
+'Restart' your system
+'Switch window'
+'Take a screenshot'
+'Tell me the time'
+'Tell me a joke'
+'Open youtube'
+'Open Google'
+'Volume up'
+'Volume down'
+'mute'
+
 
 In case you want to deactivate it for sometime, say 'sleep now'
-to terminate JARVIS, say 'goodbye'
+To terminate JARVIS, say 'goodbye'
