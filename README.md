@@ -20,10 +20,8 @@ To set up the environment, run the `command.bat` file. This will:
 - Install necessary Python packages
 
 Just double-click `command.bat` or execute it from Command Prompt:
-
-```sh
 command.bat
-sh```
+
 ### TO RUN:
 Open Command Prompt.
 Navigate to the project directory.
