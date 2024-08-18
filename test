@@ -1,0 +1,101 @@
+import numpy as np
+import librosa
+from scipy.io import wavfile
+from scipy.spatial.distance import euclidean
+
+AUTH_FEATURES_FILE = "auth_features.npy"
+
+# Function to record a voice sample for authentication
+def record_voice(filename):
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Say something for authentication...")
+        audio = r.listen(source)
+    with open(filename, "wb") as f:
+        f.write(audio.get_wav_data())
+
+# Function to extract MFCC features from an audio file
+def extract_mfcc(filename):
+    y, sr = librosa.load(filename, sr=None)
+    mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
+    return np.mean(mfccs, axis=1)  # Return a 1D array
+
+# Function to save features to a file
+def save_features(features, filename):
+    np.save(filename, features)
+
+# Function to load features from a file
+def load_features(filename):
+    return np.load(filename)
+
+# Function to authenticate the user's voice
+def authenticate_voice():
+    print("Authenticating...")
+    features_auth = load_features(AUTH_FEATURES_FILE)
+    
+    # Record a new sample for comparison
+    temp_file = "temp_auth.wav"
+    record_voice(temp_file)
+    
+    features_recorded = extract_mfcc(temp_file)
+    
+    # Compare the audio features
+    distance = euclidean(features_auth, features_recorded)
+    return distance < THRESHOLD  # Define a threshold for authentication
+
+# Initial setup: Record and save voice features for authentication
+def setup_authentication():
+    auth_file = "auth_sample.wav"
+    record_voice(auth_file)
+    features = extract_mfcc(auth_file)
+    save_features(features, AUTH_FEATURES_FILE)
+
+
+THRESHOLD = 500  # Adjust this threshold as needed
+setup_authentication()
+
+
+if authenticate_voice():
+            speak("Voice authenticated!")
+else:
+            speak("Voice authentication failed. Please try again.")
+
+
+
+from bs4 import BeautifulSoup #pip install bs4
+elif "temperature" in query:
+                search = "temperature in delhi"
+                url = f"https://www.google.com/search?q={search}"
+                r = requests.get(url)
+                data = BeautifulSoup(r.text, "html.parser")
+                temp = data.find("div",class_="BNeawe").text
+                speak(f"current (search) is {temp}")
+
+
+#to convert ui file to .py
+pyuic5 -x JARVISUI.ui -o JARVISUI.py
+
+pip install pyqt5
+pip install pyqt5-tools
+pyqt5-tools designer
+
+
+
+def news(self):
+        main_url="http://newsapi.org/v2/top-headlines?sources=techcrunch&apikey=a0d6ef2359974cd39e52179f0cc7ea83"
+        main_page=requests.get(main_url).json()
+        articles=main_page["articles"]
+        head=[]
+        day=["first","second","third","fourth","fifth","sixth","seventh","eighth","ninth","tenth"]
+        for a in articles:
+            head.append(a["title"])
+        for i in range (len(day)):
+            speak(f"today's {day[i]} news is:{head[i]}")
+            print(f"today's {day[i]} news is: {head[i]}")
+            speak("say yes to cotinue or stop to stop" )
+            q= takeCommand()
+            if 'stop' in q:
+                break
+
+'''elif 'tell me news' in self.query:
+                    news()'''

@@ -1,0 +1,250 @@
+#pip install pyaudio
+import sys
+import pyttsx3 #pip install pyttsx3
+import datetime
+import speech_recognition as sr #pip install SpeechRecognition
+import wikipedia #pip install wikipedia
+import webbrowser
+import os
+import pywhatkit as kit #pip install pywhatkit
+import pyjokes #pip install pyjokes
+import pyautogui #pip install PyAutoUI
+import time
+import requests #pip install requests
+from PyQt5 import QtWidgets,QtCore,QtGui
+from PyQt5.QtCore import QTimer,QTime,QDate,Qt
+from PyQt5.QtGui import QMovie
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+from PyQt5.uic import loadUiType
+from JARVISUI import Ui_JARVIS
+
+
+engine = pyttsx3.init('sapi5')
+voices=engine.getProperty('voices')
+#print (voices) gives the no of voices present in the system
+#print (voices[0].id) gives info about present voice at index 0(we have 2 voices 0=male,1=female)
+#engine.getProperty('rate',100) maintain the speed of speech
+
+
+phone_book = {
+    'Papa': '9412641551',
+    'Mumma':'9058293262',
+    'Kaddu':'9520106815',
+}
+
+
+def speak(audio):
+    engine.say(audio) 
+    engine.runAndWait() #Without this command, speech will not be audible to us.
+
+def wishMe():
+    #Gives greetings of the day and introduce one self
+    hour=int(datetime.datetime.now().hour)
+    if hour>=0 and hour<12:
+        speak("Good Morning Siyona!")
+    elif hour>=0 and hour<18:
+        speak("Good Afternoon Siyona!")
+    else:
+        speak("Good Evening Siyona")
+    speak("I am Jarvis,Please tell me how may I help you")
+
+class MainThread(QThread):
+    goodbye_signal = pyqtSignal()
+    
+    def __init__(self):
+        super(MainThread,self).__init__()
+    def run(self):
+        while True:
+            permission=self.takeCommand()
+            if 'wake up' in permission:
+                self.TaskExecution()
+            elif 'goodbye' in permission:
+                speak("Thanks for using me ma'am. Have a good day.")
+                self.goodbye_signal.emit()
+                sys.exit()
+
+        
+    def takeCommand(self):
+        #It takes microphone input from the user and returns string output
+
+        r = sr.Recognizer() #This class helps us to recognise our audio
+        with sr.Microphone() as source:
+            print("Listening...")
+            r.pause_threshold = 1 #threshold=seconds of non speaking audio before a phase is considered complete(means i can take a gap of 1 sec while speaking)
+            audio = r.listen(source)
+        
+        try:
+            print("Recognizing...")    
+            query = r.recognize_google(audio, language='en-in') #Using Google Speech Recognition API to convert the spoken audio (audio variable) into text.
+            print(f"User said: {query}\n")  #User query will be printed.
+
+        except Exception as e:
+            # print(e)    
+            print("Say that again please...")   #Say that again will be printed in case of improper voice 
+            return "None" #None string will be returned
+        query=query.lower()
+        return query
+    
+    
+
+
+    def TaskExecution(self):
+        wishMe()
+        while True:
+        # if 1:
+                self.query = self.takeCommand() #Converting user query into lower case
+                # Logic for executing tasks based on query
+                if 'hello' in self.query:
+                    print("hello ma'am how may i help you?")
+                    speak("hello ma'am, how may i help you?")
+                elif 'how are you' in self.query:
+                    speak("I am fine ma'am, what about you")
+                elif 'also good' in self.query or 'fine' in self.query:
+                    speak("that's great to hear")
+                elif 'open notepad' in self.query: #not working
+                    speak("Opening Notepad")
+                    npath="C:\\Program Files\\WindowsApps\\Microsoft.WindowsNotepad_11.2406.9.0_x64__8wekyb3d8bbwe\\Notepad\\notepad.exe"
+                    os.startfile(npath)
+                elif 'close notepad' in self.query:
+                    speak("Okay ma'am, closing notepad")
+                    os.system("taskkill /f /im notepad.exe")
+            
+                elif 'open command prompt' in self.query:
+                    os.system("start cmd")
+                elif 'close command prompt' in self.query:
+                    speak("Okay ma'am, closing command prompt")
+                    os.system("taskkill /f /im cmd.exe")
+
+
+                if 'send message' in self.query: #send messages on whatsapp
+                    speak("Please tell me the name of the receiver.")
+                    receiver = self.takeCommand().strip().title()
+                    speak("What is the message?")
+                    message = self.takeCommand()
+                    receiver_phone_number = phone_book.get(receiver)
+                    speak("Do you want to send it immediately or schedule it for later?")
+                    timing = self.takeCommand()
+                    now = datetime.datetime.now()
+                    if 'immediately' in timing:
+                        kit.sendwhatmsg_instantly(f"+91{receiver_phone_number}", message)
+                    else:
+                        speak("Please tell me the hour.")
+                        hour = int(input())
+                        speak("Please tell me the minute.")
+                        minute = int(input())
+                        kit.sendwhatmsg(f"+91{receiver_phone_number}", message, hour, minute)
+                        speak("Your message has been scheduled.")
+
+                elif 'open vs code' in self.query:
+                    codePath ="C:\\Users\\dell\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
+                    os.startfile(codePath)
+                elif 'close vs code' in self.query:
+                    speak("Okay ma'am, closing command prompt")
+                    os.system("taskkill /f /im code.exe")
+
+                elif 'wikipedia' in self.query:  #if wikipedia found in the query then this block will be executed
+                    speak('Searching Wikipedia...')
+                    self.query = self.query.replace("wikipedia", "")
+                    results = wikipedia.summary(self.query, sentences=1) 
+                    speak("According to Wikipedia")
+                    print(results)
+                    speak(results)
+
+                elif 'gpt' in self.query:
+                    webbrowser.open("chatgpt.com")
+
+                elif 'open youtube' in self.query:
+                    speak("What do you want me to play")
+                    str=self.takeCommand()
+                    kit.playonyt(str)
+
+                elif 'open google' in self.query:
+                    speak("Ma'am, what should i search on google?")
+                    c = self.takeCommand()
+                    #webbrowser.open("google.com")
+                    query_string = c.replace(' ', '+') #It'll tke everything i say as a url hence convert it into string
+                    webbrowser.open(f"https://www.google.com/search?q={query_string}")
+
+                elif 'the time' in self.query:
+                    strTime = datetime.datetime.now().strftime("%H:%M:%S")    
+                    speak(f"Ma'am, the time is {strTime}")
+
+                elif 'tell me a joke' in self.query:
+                    j=pyjokes.get_joke()
+                    speak(j)   
+
+                elif 'shutdown the system' in self.query:
+                    os.system("shutdown /s /t 5")
+                elif 'restart the system' in self.query:
+                    os.system("shutdown /s /t 5")
+                elif 'sleep the system' in self.query:
+                    os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
+
+                elif 'volume up' in self.query:
+                    pyautogui.press("volumeup")
+                elif 'volume down' in self.query:
+                    pyautogui.press("volumedown")
+                elif 'mute' in self.query:
+                    pyautogui.press("volumemute")
+
+
+                elif 'switch the window' in self.query:
+                    pyautogui.keyDown("alt")
+                    pyautogui.press("tab")
+                    time.sleep(1)
+                    pyautogui.keyUp("alt")
+
+                elif "take screenshot" in self.query or "take a screenshot" in self.query:
+                    speak("sir, please tell me the name for this screenshot file")
+                    name = self.takeCommand()
+                    time.sleep(3)
+                    speak("please ma'am hold the screen for few seconds, i am taking sreenshot")
+                    img = pyautogui.screenshot()
+                    img.save(f"{name}.png")
+                    speak("i am done ma'am, the screenshot is saved in our main folder. now i am ready for next command")
+                
+                elif 'sleep now' in self.query or 'exit' in self.query:
+                    speak("OKAY Siyona,I am going to sleep you can call me anytime")
+                    break 
+
+startExecution=MainThread()
+
+class Main(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.ui=Ui_JARVIS()
+        self.ui.setupUi(self)
+        self.ui.pushButton.clicked.connect(self.startTask)
+        self.ui.pushButton_2.clicked.connect(self.close)
+        self.startExecution=MainThread()
+        self.startExecution.goodbye_signal.connect(self.exitButtonClicked)
+    def startTask(self):
+        self.ui.movie=QtGui.QMovie("JARVISGIF.gif")
+        self.ui.label.setMovie(self.ui.movie)
+        self.ui.movie.start()
+        self.ui.movie=QtGui.QMovie("INITIATING.gif")
+        self.ui.label_2.setMovie(self.ui.movie)
+        self.ui.movie.start()
+        timer=QTimer(self)
+        timer.timeout.connect(self.showTime)
+        timer.start(1000)
+        self.startExecution.start()
+    
+    def showTime(self):
+        curr_time=QTime.currentTime()
+        curr_date=QDate.currentDate()
+        label_time=curr_time.toString('hh:mm:ss')
+        label_date=curr_date.toString(Qt.ISODate)
+        self.ui.textBrowser.setText(label_date)
+        self.ui.textBrowser_2.setText(label_time)
+    
+    def exitButtonClicked(self):
+        self.ui.pushButton_2.click()
+
+
+app=QApplication(sys.argv)
+jarvis=Main()
+jarvis.show()
+exit(app.exec_())        
