@@ -30,7 +30,6 @@ voices=engine.getProperty('voices')
 
 phone_book = {
     'Papa': '9412641551',
-    'Mumma':'9058293262',
     'Kaddu':'9520106815',
 }
 
