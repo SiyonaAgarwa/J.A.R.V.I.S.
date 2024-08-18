@@ -31,13 +31,20 @@ echo Installing required Python packages...
 "%PYTHON_EXE%" -m pip install pyaudio pyttsx3 SpeechRecognition wikipedia pywhatkit pyjokes PyAutoGUI requests PyQt5 pyqt5-tools
 
 REM Optional: Install Visual Studio Code
-REM Uncomment the following lines if you want to install VS Code
-set VSCODE_URL=https://code.visualstudio.com/sha/download?build=stable&os=win32-x64
+REM Use a direct download link for Visual Studio Code
+set VSCODE_URL=https://update.code.visualstudio.com/latest/win32-x64/stable
 set VSCODE_INSTALLER=VSCodeSetup-x64.exe
 echo Downloading Visual Studio Code...
 powershell -Command "Invoke-WebRequest -Uri %VSCODE_URL% -OutFile %VSCODE_INSTALLER%"
-echo Installing Visual Studio Code...
-start /wait %VSCODE_INSTALLER% /silent
+
+REM Check if the installer was downloaded successfully
+if exist "%VSCODE_INSTALLER%" (
+    echo Installing Visual Studio Code...
+    start /wait %VSCODE_INSTALLER% /silent
+) else (
+    echo Visual Studio Code download failed.
+    exit /b 1
+)
 
 echo Installation complete.
 pause
