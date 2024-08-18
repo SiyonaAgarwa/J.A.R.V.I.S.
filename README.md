@@ -23,3 +23,10 @@ Just double-click `command.bat` or execute it from Command Prompt:
 
 ```sh
 command.bat
+
+### TO RUN:
+Open Command Prompt.
+Navigate to the project directory.
+RUN: python jarvis.py
+
+Feel free to contribute! Fork the repo, make changes, and submit a pull request.
