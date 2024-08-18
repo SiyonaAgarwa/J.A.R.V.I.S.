@@ -2,8 +2,8 @@
 setlocal
 
 REM Set the Python installer URL and filename
-set PYTHON_URL=https://www.python.org/ftp/python/3.10.12/python-3.10.12-amd64.exe
-set PYTHON_INSTALLER=python-3.10.12-amd64.exe
+set PYTHON_URL=https://www.python.org/ftp/python/3.10.3/python-3.10.3-amd64.exe
+set PYTHON_INSTALLER=python-3.10.3-amd64.exe
 
 REM Set the installation directory and Python executable path
 set INSTALL_DIR=C:\Python310
@@ -32,12 +32,12 @@ echo Installing required Python packages...
 
 REM Optional: Install Visual Studio Code
 REM Uncomment the following lines if you want to install VS Code
-REM set VSCODE_URL=https://code.visualstudio.com/sha/download?build=stable&os=win32-x64
-REM set VSCODE_INSTALLER=VSCodeSetup-x64.exe
-REM echo Downloading Visual Studio Code...
-REM powershell -Command "Invoke-WebRequest -Uri %VSCODE_URL% -OutFile %VSCODE_INSTALLER%"
-REM echo Installing Visual Studio Code...
-REM start /wait %VSCODE_INSTALLER% /silent
+set VSCODE_URL=https://code.visualstudio.com/sha/download?build=stable&os=win32-x64
+set VSCODE_INSTALLER=VSCodeSetup-x64.exe
+echo Downloading Visual Studio Code...
+powershell -Command "Invoke-WebRequest -Uri %VSCODE_URL% -OutFile %VSCODE_INSTALLER%"
+echo Installing Visual Studio Code...
+start /wait %VSCODE_INSTALLER% /silent
 
 echo Installation complete.
 pause
