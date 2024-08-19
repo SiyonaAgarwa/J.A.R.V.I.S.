@@ -21,13 +21,17 @@ To set up the environment, run the `command.bat` file. This will:
 - Install VS Code
 
 Just double-click `command.bat` or execute it from Command Prompt:
+```sh
 command.bat
-
-### TO RUN:
+```
+## TO RUN:
 Open Command Prompt.
 Navigate to the project directory.
-RUN: python jarvis.py
+RUN: 
+```sh 
+python jarvis.py
+```
 
-###READ 'INSTRUCTIONS TO READ' file carefully
+### READ 'INSTRUCTIONS TO READ' file carefully
 
 Feel free to contribute! Fork the repo, make changes, and submit a pull request.
