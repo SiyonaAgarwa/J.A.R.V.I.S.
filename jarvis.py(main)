@@ -29,8 +29,8 @@ voices=engine.getProperty('voices')
 
 
 phone_book = {
-    'Papa': '9412641551',
-    'Kaddu':'9520106815',
+    'Papa': '**********',
+    'Kaddu':'**********',
 }
 
 
